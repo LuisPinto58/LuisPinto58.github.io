@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    <h1>Pomodoro timer</h1>
+    <h1 style="border: 2px solid black; width: 50%" id="timer">25</h3>
+
+    <form>
+        <label for="time">Tempo de Temporizador (minutos)</label>
+        <input type="number" placeholder="25" id="time" value="25">
+        <br>
+        <label for="time" >Tempo de Descanso(minutos)</label>
+        <input type="number" placeholder="5" value="5" id="rest">
+        <br>
+        <button type="button" id="start">Start</button>
+        <button type="button" id="stop">Stop</button>
+        <button type="button" id="reset">Reset</button>
+    </form>
+
+    <ol id="list"></ol>
+
+    <script src="app.js"></script>
+    <script src="sw.js"></script>
+</body>
+</html>
