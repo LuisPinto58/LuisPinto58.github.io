@@ -1,30 +1,289 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="src/icon-192x192.png">
+  <title>ESMADCONNECT</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="index.css">
+  <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
-    <h1>Pomodoro timer</h1>
-    <h1 style="border: 2px solid black; width: 50%" id="timer">25</h3>
+  <!-- Top navbar-->
+  <nav class="navbar fixed-top bg-body-tertiary d-flex topNav">
+    <div class="container-fluid  justify-content-center">
+      <img src="src\LOGO.svg" alt="ESMADCONNECT" height="36px">
+    </div>
+  </nav>
+  <!-- Map Mobile-->
+  <div id="mobile">
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 496 816" class="map">
+      <image width="496" height="816" xlink:href="src\map.png"></image>
+      <rect x="263" y="16" fill="transparent" opacity="100" stroke-width="3" width="97" height="96"
+        data-bs-toggle="modal" data-bs-target="#blockModal" id="blockA"></rect> <!-- stroke="#d14124"-->
 
-    <form>
-        <label for="time">Tempo de Temporizador (minutos)</label>
-        <input type="number" placeholder="25" id="time" value="25">
-        <br>
-        <label for="time" >Tempo de Descanso(minutos)</label>
-        <input type="number" placeholder="5" value="5" id="rest">
-        <br>
-        <button type="button" id="start">Start</button>
-        <button type="button" id="stop">Stop</button>
-        <button type="button" id="reset">Reset</button>
+      <rect x="327" y="113" fill="transparent" opacity="100" stroke-width="3" width="117" height="340"
+        data-bs-toggle="modal" data-bs-target="#blockModal" id="blockB"></rect>
+
+      <rect x="211" y="459" fill="transparent" opacity="100" stroke-width="3" width="250" height="100"
+        data-bs-toggle="modal" data-bs-target="#blockModal" id="blockC"></rect>
+
+      <rect x="95" y="157" fill="transparent" opacity="100" stroke-width="3" width="149" height="293"
+        data-bs-toggle="modal" data-bs-target="#blockModal" id="blockD"></rect>>
+
+      <rect x="186" y="639" fill="transparent" opacity="100" stroke-width="3" width="297" height="109"
+        data-bs-toggle="modal" data-bs-target="#blockModal" id="blockE"></rect>
+
+      <rect x="6" y="643" fill="transparent" opacity="100" stroke-width="3" width="139" height="124"
+        data-bs-toggle="modal" data-bs-target="#blockModal" id="blockF"></rect>
+
+      <rect x="146" y="6" fill="transparent" opacity="100" stroke-width="3" width="107" height="81"
+        data-bs-toggle="modal" data-bs-target="#blockModal" id="blockG"></rect>
+
+    </svg>
+  </div>
+
+  <!-- Map Web-->
+
+  <div class="container" id="web">
+    <div class="row">
+      <div class="col-12">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 0 816 496">
+          <image width="816" height="496" xlink:href="src\mapWeb.png"></image>
+          <rect x="11" y="130" fill="#fff" opacity="0" width="100" height="100" data-bs-toggle="modal"
+            data-bs-target="#blockModal" id="blockAweb"></rect>
+
+          <rect x="128" y="51" fill="#fff" opacity="0" width="328" height="121" data-bs-toggle="modal"
+            data-bs-target="#blockModal" id="blockBweb"></rect>
+
+          <rect x="460" y="39" fill="#fff" opacity="0" width="106" height="235" data-bs-toggle="modal"
+            data-bs-target="#blockModal" id="blockCweb"></rect>
+
+          <rect x="157" y="286" fill="#fff" opacity="0" width="410" height="142" data-bs-toggle="modal"
+            data-bs-target="#blockModal" id="blockDweb"></rect>
+
+          <rect x="635" y="24" fill="#fff" opacity="0" width="120" height="292" data-bs-toggle="modal"
+            data-bs-target="#blockModal" id="blockEweb"></rect>
+
+          <rect x="651" y="336" fill="#fff" opacity="0" width="120" height="157" data-bs-toggle="modal"
+            data-bs-target="#blockModal" id="blockFweb"></rect>
+
+          <rect x="0" y="245" fill="#fff" opacity="0" width="100" height="100" data-bs-toggle="modal"
+            data-bs-target="#blockModal" id="blockGweb"></rect>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Block Modal-->
+  <div class="modal fade" id="blockModal" tabindex="-1" aria-labelledby="blockModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header" style="height: 30px;">
+          <button type="button" class="btn-close modalCloser" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-header" style="justify-content: center;">
+          <img src="src/ESMADgray.png" alt="block image" id="blockImage" style="width: 100%;">
+        </div>
+
+        <div class="modal-body">
+          <h2 id="blockLetter" class="modal-title">Block ■</h2>
+          <h3>Places: </h3>
+          <div id="blockPlaces" style="color: #d14124;">■■■■■■■■■■■■</div>
+          <h3>Description:</h3>
+          <div id="blockDescription" style="white-space:pre-line;">■■■■■■■■■■■■</div>
+        </div>
+        <div class="modal-footer admin d-none" style="justify-content: center;">
+          <button type="button" class="btn btn-secondary" style="background-color:#6224c9;" id="blockEdit"
+            data-bs-toggle="modal" data-bs-target="#blockEditModal">
+            <i class="bi bi-pen" alt="edit" height="24px"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Place Modal-->
+  <div class="modal fade" id="placeModal" tabindex="-1" aria-labelledby="placeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header" style="height: 30px;">
+          <button type="button" class="btn-close modalCloser" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-header" style="justify-content: center;">
+          <img src="src/ESMADgray.png" alt="place image" id="placeImage" style="width: 100%;">
+        </div>
+
+        <div class="modal-body">
+          <h2 id="placeName" class="modal-title">■■■■■■■</h2>
+          <h3>Description:</h3>
+          <div id="placeDescription" style="white-space:pre-line;">■■■■■■■■■■■■</div>
+        </div>
+        <div class="modal-footer admin d-none" style="justify-content: center;">
+          <button type="button" class="btn btn-secondary" style="background-color:#6224c9;" id="placeEdit"
+            data-bs-toggle="modal" data-bs-target="#placeEditModal">
+            <i class="bi bi-pen" alt="edit" height="24px"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Block Edit Modal-->
+  <div class="modal fade" id="blockEditModal" tabindex="-1" aria-labelledby="blockEditModallabel" aria-hidden="true">
+    <form id="blockEditForm">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header" style="height: 30px;">
+            <button type="button" class="btn-close modalCloser" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-header" style="justify-content: center;">
+            <div class="image-upload">
+              <label for="editfile-input">
+                <img src="src/imageInput.png" alt="news image" id="editBlockImage" height="200px">
+              </label>
+              <input id="editfile-input" type="file" accept="image/*"
+                onchange="document.getElementById('editBlockImage').src = window.URL.createObjectURL(this.files[0])" />
+            </div>
+          </div>
+          <div class="modal-body">
+            <h2 id="blockName" class="modal-title">Block ■■</h2>
+
+            <br>
+
+            <div>
+              <h3>Places: </h3>
+              <div id="editBlockPlaces"></div>
+
+              <div class="floatbutton" data-bs-toggle="modal" data-bs-target="#placeCreationModal" id="floater">
+                <h6 class="plus">+</h6>
+              </div>
+            </div>
+
+            <br>
+
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Description" id="editBlockdescriptionTextarea"
+                style="height: 150px;" required></textarea>
+              <label for="editBlockdescriptionTextarea">Description</label>
+            </div>
+          </div>
+          <div class="modal-footer" style="justify-content: space-around;">
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check"></i></button>
+          </div>
+        </div>
+      </div>
     </form>
+  </div>
 
-    <ol id="list"></ol>
+  <!-- Place Add Modal-->
+  <div class="modal fade" id="placeCreationModal" tabindex="-1" aria-labelledby="placeCreationModallabel"
+    aria-hidden="true">
+    <form id="placeCreationForm">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header" style="height: 30px;">
+            <button type="button" class="btn-close modalCloser" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-header" style="justify-content: center;">
+            <div class="image-upload">
+              <label for="placefile-input">
+                <img src="src/imageInput.png" alt="place image" id="addPlaceImage" height="200px">
+              </label>
+              <input id="placefile-input" type="file" accept="image/*"
+                onchange="document.getElementById('addPlaceImage').src = window.URL.createObjectURL(this.files[0])" />
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Title" id="titleTextarea" required></textarea>
+              <label for="titleTextarea">Title</label>
+            </div>
 
-    <script src="app.js"></script>
-    <script src="sw.js"></script>
+            <br>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Description" id="placeCreatordescriptionTextarea"
+                style="height: 150px;" required></textarea>
+              <label for="placeCreatordescriptionTextarea">Description</label>
+            </div>
+          </div>
+          <div class="modal-footer" style="justify-content: space-around;">
+
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check"></i></button>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Place Edit and removal Modal-->
+  <div class="modal fade" id="placeEditModal" tabindex="-1" aria-labelledby="placeEditModallabel" aria-hidden="true">
+    <form id="placeEditForm">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header" style="height: 30px;">
+            <button type="button" class="btn-close modalCloser" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-header" style="justify-content: center;">
+            <div class="image-upload">
+              <label for="placeEditfile-input">
+                <img src="src/imageInput.png" alt="place image" id="EditPlaceImage" height="200px">
+              </label>
+              <input id="placeEditfile-input" type="file" accept="image/*"
+                onchange="document.getElementById('EditPlaceImage').src = window.URL.createObjectURL(this.files[0])" />
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Title" id="editPlaceTitleTextarea" required></textarea>
+              <label for="editPlaceTitleTextarea">Title</label>
+            </div>
+
+            <br>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Description" id="placeEditdescriptionTextarea"
+                style="height: 150px;" required></textarea>
+              <label for="placeEditdescriptionTextarea">Description</label>
+            </div>
+          </div>
+          <div class="modal-footer" style="justify-content: space-around;">
+
+
+            <button type="button" class="btn btn-danger" id="deletePlace"><i class="bi bi-trash"></i></button>
+
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check"></i></button>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Bottom navbar-->
+  <nav class="navbar fixed-bottom bg-body-tertiary bottomNav">
+    <div class="container-fluid  justify-content-evenly">
+      <a href="user.html"><img src="src\user.svg" alt="user" height="40px"></a>
+
+      <div class="popup">
+        <span class="popuptext" id="myPopup">New Content! Press to refesh</span>
+        <a href="index.html"><img src="src\mapselected.svg" alt="map" height="40px"></a>
+      </div>
+
+      <a href="news.html"><img src="src\news.svg" alt="news" height="40px"></a>
+    </div>
+  </nav>
+
+  <script type="module" src="index.js"></script>
 </body>
+
 </html>

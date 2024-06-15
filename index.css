@@ -1,0 +1,272 @@
+@font-face {
+    font-family: PortoSans;
+    src: url('PortoSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: PortoSans;
+    font-weight: bold;
+    src: url('PortoSans-Bold.ttf');
+}
+
+
+@media only screen and (max-width: 768px) {
+    #web {
+        visibility: collapse;
+    }
+
+    #mobile {
+        visibility: visible;
+    }
+
+    .picker {
+        margin-top: 20%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #web {
+        visibility: visible;
+    }
+
+    #mobile {
+        visibility: collapse;
+    }
+
+    .picker {
+        margin-top: 10%;
+    }
+}
+
+* {
+    font-family: PortoSans;
+}
+
+body {
+    padding-bottom: 55px;
+}
+
+#web {
+    position: relative;
+    margin-top: 7%;
+}
+
+.map {
+    position: absolute;
+    top: 10%;
+}
+
+
+
+.topNav {
+    padding-top: 10px;
+    background-color: white;
+}
+
+.bottomNav {
+    padding-bottom: 20px;
+}
+
+.btn {
+    margin-bottom: 10px;
+    width: 100px;
+}
+
+.card {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.Tech {
+    position: relative;
+    display: inline-block;
+}
+
+.Tech:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, #6224C9 100%);
+    /* W3C */
+}
+
+.Design {
+    position: relative;
+    display: inline-block;
+}
+
+.Design:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, #C9C224 100%);
+    /* W3C */
+}
+
+.Multimedia {
+    position: relative;
+    display: inline-block;
+}
+
+.Multimedia:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, #24C9A3 100%);
+    /* W3C */
+}
+
+.General {
+    position: relative;
+    display: inline-block;
+}
+
+.General:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 60%, #b1b3b3 100%);
+    /* W3C */
+}
+
+.gradient {
+    display: block;
+    height: 100%;
+    width: auto;
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.modalCloser {
+    margin-left: 5px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+
+
+#userLog {
+    position: absolute;
+    top: 45%;
+    left: 25%;
+}
+
+/*floating action button */
+
+.float {
+    position: fixed;
+    bottom: 80px;
+    right: 40px;
+}
+
+.floatbutton {
+    background-color: #d14124;
+    width: 60px;
+    height: 60px;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 2px 2px 3px #999;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.plus {
+    font-size: xx-large;
+    margin: 0px;
+}
+
+
+.form-floating {
+    margin-bottom: 10px;
+}
+
+.image-upload>input {
+    display: none;
+}
+
+
+/*pop up for refresh*/
+
+/* Popup container */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class when clicking on the popup container (hide and show the popup) */
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
