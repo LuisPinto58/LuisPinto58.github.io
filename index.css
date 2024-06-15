@@ -28,8 +28,8 @@ body {
 }
 
 #mobile{
-    width: 90%;
-    margin-top: 20%;
+    margin-top: 64px;
+    height: fit-content;
 }
 
 
