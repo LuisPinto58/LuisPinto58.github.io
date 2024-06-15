@@ -10,51 +10,28 @@
 }
 
 
-@media only screen and (max-width: 768px) {
-    #web {
-        visibility: collapse;
-    }
-
-    #mobile {
-        visibility: visible;
-    }
-
-    .picker {
-        margin-top: 20%;
-    }
-}
-
-@media only screen and (min-width: 768px) {
-    #web {
-        visibility: visible;
-    }
-
-    #mobile {
-        visibility: collapse;
-    }
-
-    .picker {
-        margin-top: 10%;
-    }
-}
-
 * {
     font-family: PortoSans;
 }
 
 body {
-    padding-bottom: 55px;
+    padding-bottom: 68px;
 }
+
+.picker{
+    margin-top: 70px;
+}
+
 
 #web {
-    position: relative;
-    margin-top: 7%;
+    margin-top: 54px;
 }
 
-.map {
-    position: absolute;
-    top: 10%;
+#mobile{
+    width: 95%;
+    margin-top: 20%;
 }
+
 
 
 
