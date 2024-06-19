@@ -60,7 +60,11 @@
         <input id="file-input" type="file" accept="image/*"/>
       </div>
     </div>
-
+    <div style="display: flex;flex-wrap: nowrap;justify-content: center;">
+    <div class="popup">
+      <span class="popuptext" id="myPopup">Might take a while to view changes :D</span>
+    </div>
+    </div>
     <div style="margin-top: 40px;margin-left: 20px; margin-right: 20px;display: flex;flex-wrap: wrap;justify-content: center;">
       <button type="button" class="btn btn-outline-light" style="background-color:#24C9A3; width: 80%;margin-bottom: 24px;height: 60px;" data-bs-toggle="modal" data-bs-target="#preferencesModal">
         Change Preferences
@@ -184,6 +188,12 @@
 
                   <button type="button" class="btn btn-secondary" style="background-color:#d14124;width: fit-content;"
                     id="newsBlock"><img src="src\mapIcon.svg" alt="map" height="24px"></button>
+
+                    <div class="popup">
+                      <span class="popuptext" id="myFavPopup"></span>
+                      <button type="button" class="btn btn-secondary" style="background-color:#C9C224;width: fit-content;"
+                        id="newsFav"><i class="bi bi-star" alt="fav" height="24px"></i></button>
+                    </div>
 
                   <button type="button" class="btn btn-outline-dark" style="width: fit-content;" id="newsShare"><img
                       src="src/share.svg" alt="map" height="24px"></button>

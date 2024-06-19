@@ -1,12 +1,12 @@
 @font-face {
     font-family: PortoSans;
-    src: url('PortoSans-Regular.ttf');
+    src: url('src/PortoSans-Regular.ttf');
 }
 
 @font-face {
     font-family: PortoSans;
     font-weight: bold;
-    src: url('PortoSans-Bold.ttf');
+    src: url('src/PortoSans-Bold.ttf');
 }
 
 
@@ -33,7 +33,13 @@ body {
 }
 
 
+.btn:active{
+    box-shadow: 5px 5px #b1b3b3;
+}
 
+rect:active{
+    stroke: #d14124;
+}
 
 .topNav {
     padding-top: 10px;

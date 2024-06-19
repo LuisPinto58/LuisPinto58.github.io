@@ -39,10 +39,9 @@ const auth = getAuth(app)
 const db = getFirestore(app);
 
 //create user 
-
 document.getElementById("createAccountForm").addEventListener("submit", (event) => createAccount(event))
 
-function createAccount(event) {
+function createAccount(event) {          
   event.preventDefault()
   const email = document.getElementById("InputEmailcreator").value
   const password = document.getElementById("InputPasswordcreator").value
@@ -60,7 +59,7 @@ function createAccount(event) {
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     await setDoc(doc(db, "users", user.uid), {
-      favorites: [""],
+      favorites: [""],                                   //setting default information that user can edit later
       preferences: ["Design", "Multimedia", "Tech", "General"],
     })
     console.log("Successful")

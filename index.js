@@ -57,7 +57,7 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth, async (user) => {                   //will check if user is logged in
   if (user) {
     const docSnap = await getDoc(doc(db, "users", user.uid))
     if (docSnap.exists()) {
@@ -79,13 +79,14 @@ const placeFolder = ref(storage, "places")
 const blockFolder = ref(storage, "block")
 let currentBlock = ""
 
-if (blinkingpermit) {
+// block locator functions
+if (blinkingpermit) {                //will check if user was sent from news modal button
   let block = localStorage.getItem('blinkingblock')
   blinkBlock(block)
 }
 
-function blinkBlock(block) {
-  let verify = true
+function blinkBlock(block) {                         //for blinking the event location from news modal           
+  let verify = true 
   let counter = 0
 
   const t = setInterval(function () {
@@ -110,7 +111,6 @@ function blinkBlock(block) {
 
 function stopBlink(t) {
   clearInterval(t)
-
 }
 
 
@@ -121,8 +121,8 @@ let counter = 0
 for (let index = 0; index < blocks.length; index++) {
   document.getElementById(`block${blocks[index]}`).addEventListener("click", () => loadModal(blocks[index]))
   document.getElementById(`block${blocks[index]}web`).addEventListener("click", () => loadModal(blocks[index]))
-  onSnapshot(collection(doc(db, "block", blocks[index]), "places"), () => {                  //places information onsnapshots
-    if (counter < 5) {
+  onSnapshot(collection(doc(db, "block", blocks[index]), "places"), () => {                  //places information onsnapshots to execute functions when content is updated
+    if (counter < 5) {      //to avoid messages onload
       counter++
     } else {
       const popup = document.getElementById("myPopup");
@@ -134,8 +134,8 @@ for (let index = 0; index < blocks.length; index++) {
   })
 }
 
-onSnapshot(collection(db, "block"), () => {                  //block information
-  if (counter < 6) {
+onSnapshot(collection(db, "block"), () => {                  //block information snapshot to keep an eye on block database alterations
+  if (counter < 6) {      //to avoid messages onload
     counter++
   } else {
     const popup = document.getElementById("myPopup");
@@ -146,19 +146,28 @@ onSnapshot(collection(db, "block"), () => {                  //block information
   }
 })
 
+onSnapshot(collection(db, "news"), () => {                  //news information snapshot to keep an eye on news database alterations
+  if (counter < 7) {      //to avoid messages onload
+    counter++
+  } else {
+    new Notification("There have been content changes on the news tab! Check them out!")                 //will send a local notification to user without pop up in this case
+
+  }
+})
+
 
 
 
 //block modal
 async function loadModal(block) {
-  //skeleton
-  document.getElementById("blockImage").src = "src/ESMADgray.png"
-  document.getElementById("blockPlaces").innerHTML = ""
+  //skeleton for removing previous information, so as not to confuse the user and let them know its loading
+  document.getElementById("blockImage").src = "src/ESMADgray.png"                  
+  document.getElementById("blockPlaces").innerHTML = "Empty"
   document.getElementById("blockLetter").innerHTML = "■■■■■■■■■■■■"
   document.getElementById("blockDescription").innerHTML = "■■■■■■■■■■■■"
   const blockFolder = ref(storage, "block")
   const imageUrl = await getDownloadURL(ref(blockFolder, `${block}.jpg`))
-  document.getElementById("blockImage").src = imageUrl
+  document.getElementById("blockImage").src = imageUrl 
 
   //description and block
   const blockref = doc(db, "block", `${block}`)
@@ -173,10 +182,11 @@ async function loadModal(block) {
   } else {
     console.log('No such document!');
   }
-  //places  
+  //places information
   const placecollection = collection(blockref, "places")
   const snapshot = await getDocs(placecollection);
   snapshot.forEach((doc) => {
+    document.getElementById("blockPlaces").innerHTML = ""
     const newPlace = document.createElement("h5")
     newPlace.innerHTML = doc.data().name
     newPlace.setAttribute("data-bs-toggle", "modal")
@@ -198,7 +208,7 @@ async function loadLocation(doc) {
   document.getElementById("placeName").innerHTML = doc.data().name
   document.getElementById("placeDescription").innerHTML = doc.data().description
   const imageUrl = await getDownloadURL(ref(placeFolder, doc.id))
-  document.getElementById("placeImage").src = imageUrl
+  document.getElementById("placeImage").src = imageUrl 
 
 
   $('#placeEdit').replaceWith($('#placeEdit').clone());        //remove other event listeners
@@ -209,15 +219,13 @@ async function loadLocation(doc) {
 //block edit modal
 
 async function editBlock(docSnap) {
-  document.getElementById("editfile-input").value = ""
+  document.getElementById("editfile-input").value = ""                           //removing previously loaded information
   document.getElementById("editBlockImage").src = "src/imageInput.png"
   document.getElementById("editBlockPlaces").innerHTML = ""
   document.getElementById("blockName").innerHTML = "block " + docSnap.data().letter
   document.getElementById("editBlockdescriptionTextarea").value = docSnap.data().description
 
-  currentBlock = docSnap.data().letter
-
-
+  currentBlock = docSnap.data().letter   
 
   //places  
   let placecollection = collection(doc(db, "block", currentBlock), "places")
@@ -227,13 +235,14 @@ async function editBlock(docSnap) {
     newPlace.innerHTML = doc.data().name
     document.getElementById("editBlockPlaces").appendChild(newPlace)
   });
+  $('#blockEditForm').replaceWith($('#blockEditForm').clone());        //remove other event listeners
 
   document.getElementById("blockEditForm").addEventListener("submit", async (event) => {
     event.preventDefault()
     await updateDoc(docSnap.ref, {
       description: document.getElementById("editBlockdescriptionTextarea").value
     }).then(async function () {
-      if (document.getElementById("editfile-input").files.length != 0) {
+      if (document.getElementById("editfile-input").files.length != 0) {             //checking if file input hahs content
         const refimage = ref(blockFolder, docSnap.data().letter + ".jpg")
         const uploaded = document.getElementById("editfile-input").files[0]
         await uploadBytes(refimage, uploaded)
@@ -245,12 +254,13 @@ async function editBlock(docSnap) {
 
 //Place creation 
 document.getElementById("floater").addEventListener("click", () => {
-  document.getElementById("placefile-input").value = ""
+  document.getElementById("placefile-input").value = ""                    //changing input information to not upload previously added information
   document.getElementById("addPlaceImage").src = "src/imageInput.png"
 })
 
 
 
+$('#placeCreationForm').replaceWith($('#placeCreationForm').clone());        //remove other event listeners
 document.getElementById("placeCreationForm").addEventListener("submit", (event) => createPlace(event))
 
 async function createPlace(event) {
@@ -274,18 +284,14 @@ async function createPlace(event) {
 
 async function editPlace(doc) {
   $('#deletePlace').replaceWith($('#deletePlace').clone());     //remove previous event listeners
-
   document.getElementById("deletePlace").addEventListener("click", () => deleteLocation(doc))
 
-  const docSnap = await getDoc(doc.ref)
-  if (docSnap.exists()) {
-    document.getElementById("editPlaceTitleTextarea").value = docSnap.data().name
-    document.getElementById("placeEditdescriptionTextarea").value = docSnap.data().description
-  } else {
-    // docSnap.data() will be undefined in this case
-    console.log("No such document!");
-  }
+  //add previously added information
+    document.getElementById("editPlaceTitleTextarea").value = doc.data().name
+    document.getElementById("placeEditdescriptionTextarea").value = doc.data().description
+  
 
+    $('#placeEditForm').replaceWith($('#placeEditForm').clone());     //remove previous event listeners
   document.getElementById("placeEditForm").addEventListener("submit", async (event) => {
     event.preventDefault()
     await setDoc(doc.ref, {
@@ -302,10 +308,10 @@ async function editPlace(doc) {
   })
 }
 
-
+//for deleting location 
 async function deleteLocation(doc) {
   await deleteDoc(doc.ref)
-  await deleteObject(ref(placeFolder, doc.id)).then(() => {
+  await deleteObject(ref(placeFolder, doc.id)).then(() => {           //deleting storage
     console.log("file deleted")
   }).catch((error) => {
     console.log("error: " + error)

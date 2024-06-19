@@ -43,7 +43,7 @@ function logIn(event) {
     })
     .catch(error => {
       console.log(error.code)
-      document.getElementById("errorMessage").classList.remove("d-none")
+      document.getElementById("errorMessage").classList.remove("d-none") //for showing error message
     })
 }
 

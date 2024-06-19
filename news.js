@@ -46,6 +46,8 @@ const firebaseConfig = {
 
 
 
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
@@ -53,6 +55,10 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app)
 const auth = getAuth(app)
+
+
+
+
 
 const newsfolder = ref(storage, "news")
 let categoryButton
@@ -62,9 +68,12 @@ const news = collection(db, 'news');
 let CurrentUser
 
 
+
+
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     CurrentUser = user.uid;
+    
     const docSnap = await getDoc(doc(db, "users", user.uid))
     if (docSnap.exists()) {
       preferences = docSnap.data().preferences                  //for for you page
@@ -72,6 +81,7 @@ onAuthStateChanged(auth, async (user) => {
       q = query(news, where('area', 'in', preferences), orderBy("startDate"))
 
       if (docSnap.data().adminToken == true) {
+        // for admin functionality
         $('.admin').removeClass('d-none');
       }
 
@@ -83,8 +93,9 @@ onAuthStateChanged(auth, async (user) => {
       console.log("No such document!");
     }
   } else {
-    // User is signed out
+    // User is signed out will disable logged user functions
     document.getElementById("forYouButton").disabled = true
+    document.getElementById("newsFav").disabled = true
     categoryButton = "allButton"
     buttonChange(categoryButton, "allButton")
     q = query(news, orderBy("startDate"))
@@ -94,7 +105,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 
-//buttons
+//button functions, will change category and database query for content related to clicked button
 document.getElementById("forYouButton").addEventListener("click", () => {
   buttonChange(categoryButton, "forYouButton")
   categoryButton = "forYouButton"
@@ -167,7 +178,7 @@ async function loadNews(q) {
       elipse.innerHTML = '<img src="src/circlefuture.svg" alt="circle" height="28px">'
     }
 
-    const card = document.createElement("div")                                 //add card  not ordering
+    const card = document.createElement("div")                                 //adding cards to news tab 
     card.className = "col-11 col-md-4"
     card.setAttribute("data-bs-toggle", "modal")
     card.setAttribute("data-bs-target", "#newsModal")
@@ -190,7 +201,7 @@ async function loadNews(q) {
     card.addEventListener("click", () => loadNewsModal(doc, imgUrl))
   }
 
-  document.getElementsByClassName("skeleton")[0].classList.add("d-none");
+  document.getElementsByClassName("skeleton")[0].classList.add("d-none"); //removing skeleton screen element
   document.getElementsByClassName("skeleton")[1].classList.add("d-none");
 }
 
@@ -219,11 +230,11 @@ function unloadNews() {
 }
 
 //load modal
-function loadNewsModal(doc, image) {
+function loadNewsModal(doc, image) {                           //will load content to modal of card clicked
   //load image
   document.getElementById("newsImage").src = image
   //skeleton
-  document.getElementById("newsTitle").innerHTML = "■■■■■■■■■■■■"
+  document.getElementById("newsTitle").innerHTML = "■■■■■■■■■■■■"                  //while its replacing content, modal will show skeleton
   document.getElementById("newsDescription").innerHTML = "■■■■■■■■■■■■"
   document.getElementById("newsArea").innerHTML = "■■■■■■■■■■■■"
   document.getElementById("newsRoom").innerHTML = "■■■■■■■■■■■■"
@@ -270,7 +281,7 @@ function loadNewsModal(doc, image) {
 }
 
 
-
+//favorites
 async function favorites(documento) {
   const docSnap = await getDoc(doc(db, "users", CurrentUser))
   if (docSnap.exists()) {
@@ -318,7 +329,7 @@ function showBlock(block) {
   } else if (block == "None") {
     alert("This event doesn't have a location")
   } else {
-    localStorage.setItem("blinkingblock", block);
+    localStorage.setItem("blinkingblock", block);     //local storage functions for locating block in index.html
     localStorage.setItem("blinkingpermit", true);
     location.href = "index.html"
   }
@@ -326,7 +337,7 @@ function showBlock(block) {
 
 
 //add news
-document.getElementById("floater").addEventListener("click", () => {
+document.getElementById("floater").addEventListener("click", () => {            //removing image in case another had been left mid edit
   document.getElementById("file-input").value = ""
   document.getElementById("newsAddImage").src = "src/imageInput.png"
 })
@@ -336,7 +347,7 @@ document.getElementById("creatorForm").addEventListener("submit", (event) => cre
 
 async function createNews(event) {
   event.preventDefault()
-  await addDoc(collection(db, 'news'), {
+  await addDoc(collection(db, 'news'), {            //adding to firebase
     title: document.getElementById("titleTextarea").value,
     description: document.getElementById("descriptionTextarea").value,
     startDate: Timestamp.fromDate(new Date(document.getElementById("newsStartDate").value)),
@@ -366,23 +377,19 @@ async function editNews(doc) {
 
   document.getElementById("deleteNews").addEventListener("click", () => deleteNews(doc))
 
-  const docSnap = await getDoc(doc.ref)
-  if (docSnap.exists()) {
-    document.getElementById("edittitleTextarea").innerHTML = docSnap.data().title
-    document.getElementById("editdescriptionTextarea").innerHTML = docSnap.data().description
-    document.getElementById("editroomTextarea").innerHTML = docSnap.data().room
-    document.getElementById(`editselect${docSnap.data().block}`).setAttribute("selected", "")
-    document.getElementById(`editselect${docSnap.data().area}`).setAttribute("selected", "")
-    document.getElementById("editnewsStartDate").value = new Date(docSnap.data().startDate.toDate().getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
-    document.getElementById("editnewsEndDate").value = new Date(docSnap.data().endDate.toDate().getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
-  } else {
-    // docSnap.data() will be undefined in this case
-    console.log("No such document!");
-  }
+//will load document form fields with previously edited data
+    document.getElementById("edittitleTextarea").innerHTML = doc.data().title
+    document.getElementById("editdescriptionTextarea").innerHTML = doc.data().description
+    document.getElementById("editroomTextarea").innerHTML = doc.data().room
+    document.getElementById(`editselect${doc.data().block}`).setAttribute("selected", "")
+    document.getElementById(`editselect${doc.data().area}`).setAttribute("selected", "")
+    document.getElementById("editnewsStartDate").value = new Date(doc.data().startDate.toDate().getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
+    document.getElementById("editnewsEndDate").value = new Date(doc.data().endDate.toDate().getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
+ 
 
   document.getElementById("editForm").addEventListener("submit", async (event) => {
     event.preventDefault()
-    await setDoc(doc.ref, {
+    await setDoc(doc.ref, {              //loaded information is important due to using setDoc function without merge
       title: document.getElementById("edittitleTextarea").value,
       description: document.getElementById("editdescriptionTextarea").value,
       startDate: Timestamp.fromDate(new Date(document.getElementById("editnewsStartDate").value)),
@@ -391,7 +398,7 @@ async function editNews(doc) {
       room: document.getElementById("editroomTextarea").value,
       area: document.getElementById("editfloatingAreaSelect").value
     }).then(async function () {
-      if (document.getElementById("editfile-input").files.length != 0) {
+      if (document.getElementById("editfile-input").files.length != 0) {         //will check if file input is empty so storage isnt updated. This is the only field that isnt required
         const refimage = ref(newsfolder, doc.id)
         const uploaded = document.getElementById("editfile-input").files[0]
         await uploadBytes(refimage, uploaded)
@@ -404,27 +411,38 @@ async function editNews(doc) {
 //delete News
 async function deleteNews(doc) {
   await deleteDoc(doc.ref)
-  await deleteObject(ref(newsfolder, doc.id)).then(() => {
+  await deleteObject(ref(newsfolder, doc.id)).then(() => {         //to remove image from storage
     console.log("file deleted")
   }).catch((error) => {
     console.log("error: " + error)
   });
+  const d = query(collection(db,"users"),where("favorites", "array-contains", doc.id)) //to remove from users favorites 
+  const querySnap = await getDocs(d);
+  querySnap.forEach( async (documento) => {
+      const Array = documento.data().favorites
+      Array.splice(documento.data().favorites.indexOf(doc.id), 1)
+      if (Array[0] == undefined) {                           //favorite query on user.js cant work with empty array
+        Array.push("")
+      }
+      await updateDoc(documento.ref, {
+        favorites: Array
+      })
+    
+});
 }
 
 
-
-
-//alert that there have been alterations
-
+//alert that there have been alterations to database live
 
 let count = 0
 
-const newData = onSnapshot(collection(db, "news"), () => {
+onSnapshot(collection(db, "news"), () => {
   if (count == 0) {
-    count++
+    count++        //to make sure "alterations" arent just the initial load
   } else {
     const popup = document.getElementById("myPopup");
     popup.classList.toggle("show")
+    new Notification("There have been content changes to this page! Refresh for new content!")                 //will send a local notification to user
     setTimeout(() => {
       popup.classList.toggle("show")
     }, "5000");

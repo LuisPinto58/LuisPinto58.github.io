@@ -55,18 +55,24 @@ const auth = getAuth(app)
 
 let myFavorites
 const userFolder = ref(storage, "users")
-let userId
+let CurrentUser
 
 onAuthStateChanged(auth, async (user) => {
-    if (user) {
+    if (user) {                                                          //user is logged in
         document.getElementById("notLogged").classList.add("d-none")
         document.getElementById("Logged").classList.remove("d-none")
-        userId= user.uid
-        const refimage = ref(userFolder, userId)
-        document.getElementById("pfp").src = await getDownloadURL(refimage)
+        CurrentUser = user.uid
+        const refimage = ref(userFolder, CurrentUser)
+        const img = await getDownloadURL(refimage)
+        document.getElementById("pfp").src = img
+        console.log(img)
+        
+        Notification.requestPermission(function(status){              //will request permission for notifications
+          console.log("Notification permission status:", status);
+         });
         
         //for getting Favorites
-        const docSnap = await getDoc(doc(db, "users", user.uid))
+        const docSnap = await getDoc(doc(db, "users", CurrentUser))
         if (docSnap.exists()) {
             myFavorites = docSnap.data().favorites
             await getFavorites()
@@ -93,6 +99,12 @@ onAuthStateChanged(auth, async (user) => {
     location.reload()
   }
 
+ //change to personal information
+
+  document.getElementById("PItab").addEventListener("click", ()=>{
+    document.getElementById("main").classList.add("d-none")
+    document.getElementById("personalInfo").classList.remove("d-none")
+  })
 
   //changePassword
   document.getElementById("PasswordForm").addEventListener("submit", (event)=> changePassword(event))
@@ -110,44 +122,7 @@ onAuthStateChanged(auth, async (user) => {
     });
   }
 
-  //change to personal information
-
-  document.getElementById("PItab").addEventListener("click", ()=>{
-    document.getElementById("main").classList.add("d-none")
-    document.getElementById("personalInfo").classList.remove("d-none")
-  })
-
-  //change pfp
-
-  document.getElementById("file-input").addEventListener("change", async ()=>{
-    document.getElementById('pfpChange').src = window.URL.createObjectURL(document.getElementById("file-input").files[0])
-    const refimage = ref(userFolder, userId)
-    await uploadBytes(refimage, document.getElementById("file-input").files[0])
-    location.reload()
-
-  })
-
-
-
-   //change to favorites information
-
-   document.getElementById("Favtab").addEventListener("click", ()=>{
-    document.getElementById("main").classList.add("d-none")
-    document.getElementById("favorites").classList.remove("d-none")
-  })
-
-
-  //change to main user
-  document.getElementById("PIReturn").addEventListener("click", ()=> toMain())
-  document.getElementById("FavoritesReturn").addEventListener("click", ()=> toMain())
-
-  function toMain(){
-    document.getElementById("main").classList.remove("d-none")
-    document.getElementById("favorites").classList.add("d-none")
-    document.getElementById("personalInfo").classList.add("d-none")
-  }
-
-//changePreferences
+ //changePreferences
 
 document.getElementById("preferencesForm").addEventListener("submit", async (event)=>  await changePreferences(event))
 
@@ -165,6 +140,43 @@ document.getElementById("preferencesForm").addEventListener("submit", async (eve
       })
         
   }
+
+  //change pfp
+
+  document.getElementById("file-input").addEventListener("change", async ()=>{
+    document.getElementById('pfpChange').src = window.URL.createObjectURL(document.getElementById("file-input").files[0])
+    const refimage = ref(userFolder, CurrentUser)
+    await uploadBytes(refimage, document.getElementById("file-input").files[0])
+    const popup = document.getElementById("myPopup");
+      popup.classList.toggle("show")
+      setTimeout(() => {
+        popup.classList.toggle("show")
+      }, "5000")
+
+  })
+
+
+
+
+
+  //change to main user
+  document.getElementById("PIReturn").addEventListener("click", ()=> toMain())
+  document.getElementById("FavoritesReturn").addEventListener("click", ()=> toMain())
+
+  function toMain(){
+    document.getElementById("main").classList.remove("d-none")
+    document.getElementById("favorites").classList.add("d-none")
+    document.getElementById("personalInfo").classList.add("d-none")
+  }
+
+  
+   //change to favorites information
+
+   document.getElementById("Favtab").addEventListener("click", ()=>{
+    document.getElementById("main").classList.add("d-none")
+    document.getElementById("favorites").classList.remove("d-none")
+  })
+
 
 
 
@@ -244,6 +256,7 @@ function loadNewsModal(doc, image) {
 
    //remove previous event listeners
    $('#newsBlock').replaceWith($('#newsBlock').clone());
+  $('#newsFav').replaceWith($('#newsFav').clone());
 
   //description and title
 
@@ -254,6 +267,7 @@ function loadNewsModal(doc, image) {
   document.getElementById("newsStart").innerHTML = `${doc.data().startDate.toDate().toDateString()} at ${doc.data().startDate.toDate().toLocaleTimeString()}`
   document.getElementById("newsEnd").innerHTML = `${doc.data().endDate.toDate().toDateString()} at ${doc.data().endDate.toDate().toLocaleTimeString()}`
   document.getElementById("newsBlock").addEventListener("click", () => showBlock(doc.data().block))
+  document.getElementById("newsFav").addEventListener("click", () => { removeFavorites(doc) })
 
 
   const shareData = {                      //for sharing news through web share API
@@ -275,6 +289,31 @@ function loadNewsModal(doc, image) {
     }
   });
 }
+
+async function removeFavorites(documento) {
+  const docSnap = await getDoc(doc(db, "users", CurrentUser))
+  if (docSnap.exists()) {
+      const Array = docSnap.data().favorites                                                    //to remove favorites
+      Array.splice(docSnap.data().favorites.indexOf(documento.id), 1)
+      if (Array[0] == undefined) {                           //favorite query on user.js cant work with empty array
+        Array.push("")
+      }
+      await updateDoc(docSnap.ref, {
+        favorites: Array
+      })
+      const favpopup = document.getElementById("myFavPopup");   //triggering pop up
+      favpopup.innerHTML = "Removed from favorites"
+      favpopup.classList.toggle("show")
+      setTimeout(() => {
+        favpopup.classList.toggle("show")
+      }, "5000");
+
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
+}
+
 
 
 

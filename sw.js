@@ -1,12 +1,13 @@
-const CACHE_STATIC_NAME = "static-v4";
-const CACHE_DYNAMIC_NAME = "dynamic-v4";
+const CACHE_STATIC_NAME = "static-v11";
+const CACHE_DYNAMIC_NAME = "dynamic-v11";
 
 const OFFLINE_URL = "offline.html";
 
 self.addEventListener("install", function (e) {
     e.waitUntil(
         caches.open(CACHE_STATIC_NAME).then(function (cache) {
-            return cache.addAll(["/index.html", "/index.js", "/login.html", "/login.js", "/create.html", "/create.js", "/index.css", "/news.html", "/news.js", "/PortoSans-Bold.ttf", "/PortoSans-Regular.ttf", OFFLINE_URL]);
+            return cache.addAll(["/index.html", "/index.js", "/login.html", "/login.js", "/create.html", "/create.js", "/index.css", "/news.html", "/news.js",
+                 "src/PortoSans-Bold.ttf", "src/PortoSans-Regular.ttf","src/LOGO.svg","src/map.png","src/mapWeb.png","" , OFFLINE_URL]);
         })
     );
 });
