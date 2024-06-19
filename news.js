@@ -442,7 +442,7 @@ onSnapshot(collection(db, "news"), () => {
   } else {
     const popup = document.getElementById("myPopup");
     popup.classList.toggle("show")
-    new Notification("There have been content changes to this page! Refresh for new content!")                 //will send a local notification to user
+    new Notification("There have been content changes to this page! Refresh for new content!",{icon: "src/icon-512x512.png"})                 //will send a local notification to user
     setTimeout(() => {
       popup.classList.toggle("show")
     }, "5000");

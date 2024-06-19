@@ -150,7 +150,7 @@ onSnapshot(collection(db, "news"), () => {                  //news information s
   if (counter < 7) {      //to avoid messages onload
     counter++
   } else {
-    new Notification("There have been content changes on the news tab! Check them out!")                 //will send a local notification to user without pop up in this case
+    new Notification("There have been content changes on the news tab! Check them out!",{icon: "src/icon-512x512.png"})                 //will send a local notification to user without pop up in this case
 
   }
 })
