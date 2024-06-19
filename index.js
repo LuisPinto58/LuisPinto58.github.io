@@ -150,7 +150,7 @@ onSnapshot(collection(db, "news"), () => {                  //news information s
   if (counter < 7) {      //to avoid messages onload
     counter++
   } else {
-    new Notification("There have been content changes on the news tab! Check them out!",{icon: "src/icon-512x512.png"})                 //will send a local notification to user without pop up in this case
+    new Notification("There have been content changes on the news tab! Check them out!")                 //will send a local notification to user 
 
   }
 })
@@ -182,11 +182,16 @@ async function loadModal(block) {
   } else {
     console.log('No such document!');
   }
-  //places information
+  //places information 
+  let count = 0        //to remove empty from inner html
   const placecollection = collection(blockref, "places")
   const snapshot = await getDocs(placecollection);
   snapshot.forEach((doc) => {
-    document.getElementById("blockPlaces").innerHTML = ""
+    if(count == 0){             //to remove empty from inner html
+      document.getElementById("blockPlaces").innerHTML = ""
+      console.log(count)
+      count++
+    }
     const newPlace = document.createElement("h5")
     newPlace.innerHTML = doc.data().name
     newPlace.setAttribute("data-bs-toggle", "modal")
