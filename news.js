@@ -73,10 +73,13 @@ let CurrentUser
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     CurrentUser = user.uid;
-    
+
     const docSnap = await getDoc(doc(db, "users", user.uid))
     if (docSnap.exists()) {
       preferences = docSnap.data().preferences                  //for for you page
+      Notification.requestPermission(function(status){              //will request permission for notifications
+        console.log("Notification permission status:", status);
+       });
       categoryButton = "forYouButton"
       q = query(news, where('area', 'in', preferences), orderBy("startDate"))
 
@@ -201,7 +204,7 @@ async function loadNews(q) {
     card.addEventListener("click", () => loadNewsModal(doc, imgUrl))
 
     //making sure images  get updated
-    $('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() })
+    $('.NO-CACHE').attr('src', function () { return $(this).attr('src') + "?a=" + Math.random() })
   }
 
 
@@ -238,10 +241,10 @@ function loadNewsModal(doc, image) {                           //will load conte
   //load image
   document.getElementById("newsImage").src = image
 
-  
+
   //making sure images  get updated
-  $('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() })
-  
+  $('.NO-CACHE').attr('src', function () { return $(this).attr('src') + "?a=" + Math.random() })
+
   //skeleton
   document.getElementById("newsTitle").innerHTML = "■■■■■■■■■■■■"                  //while its replacing content, modal will show skeleton
   document.getElementById("newsDescription").innerHTML = "■■■■■■■■■■■■"
@@ -256,7 +259,6 @@ function loadNewsModal(doc, image) {                           //will load conte
   $('#newsFav').replaceWith($('#newsFav').clone());
 
   //description and title
-
   document.getElementById("newsTitle").innerHTML = doc.data().title
   document.getElementById("newsDescription").innerHTML = doc.data().description
   document.getElementById("newsRoom").innerHTML = doc.data().room
@@ -386,15 +388,15 @@ async function editNews(doc) {
 
   document.getElementById("deleteNews").addEventListener("click", () => deleteNews(doc))
 
-//will load document form fields with previously edited data
-    document.getElementById("edittitleTextarea").innerHTML = doc.data().title
-    document.getElementById("editdescriptionTextarea").innerHTML = doc.data().description
-    document.getElementById("editroomTextarea").innerHTML = doc.data().room
-    document.getElementById(`editselect${doc.data().block}`).setAttribute("selected", "")
-    document.getElementById(`editselect${doc.data().area}`).setAttribute("selected", "")
-    document.getElementById("editnewsStartDate").value = new Date(doc.data().startDate.toDate().getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
-    document.getElementById("editnewsEndDate").value = new Date(doc.data().endDate.toDate().getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
- 
+  //will load document form fields with previously edited data
+  document.getElementById("edittitleTextarea").innerHTML = doc.data().title
+  document.getElementById("editdescriptionTextarea").innerHTML = doc.data().description
+  document.getElementById("editroomTextarea").innerHTML = doc.data().room
+  document.getElementById(`editselect${doc.data().block}`).setAttribute("selected", "")
+  document.getElementById(`editselect${doc.data().area}`).setAttribute("selected", "")
+  document.getElementById("editnewsStartDate").value = new Date(doc.data().startDate.toDate().getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
+  document.getElementById("editnewsEndDate").value = new Date(doc.data().endDate.toDate().getTime() + new Date().getTimezoneOffset() * -60 * 1000).toISOString().slice(0, 19)
+
 
   document.getElementById("editForm").addEventListener("submit", async (event) => {
     event.preventDefault()
@@ -425,19 +427,19 @@ async function deleteNews(doc) {
   }).catch((error) => {
     console.log("error: " + error)
   });
-  const d = query(collection(db,"users"),where("favorites", "array-contains", doc.id)) //to remove from users favorites 
+  const d = query(collection(db, "users"), where("favorites", "array-contains", doc.id)) //to remove from users favorites 
   const querySnap = await getDocs(d);
-  querySnap.forEach( async (documento) => {
-      const Array = documento.data().favorites
-      Array.splice(documento.data().favorites.indexOf(doc.id), 1)
-      if (Array[0] == undefined) {                           //favorite query on user.js cant work with empty array
-        Array.push("")
-      }
-      await updateDoc(documento.ref, {
-        favorites: Array
-      })
-    
-});
+  querySnap.forEach(async (documento) => {
+    const Array = documento.data().favorites
+    Array.splice(documento.data().favorites.indexOf(doc.id), 1)
+    if (Array[0] == undefined) {                           //favorite query on user.js cant work with empty array
+      Array.push("")
+    }
+    await updateDoc(documento.ref, {
+      favorites: Array
+    })
+
+  });
 }
 
 
@@ -451,7 +453,10 @@ onSnapshot(collection(db, "news"), () => {
   } else {
     const popup = document.getElementById("myPopup");
     popup.classList.toggle("show")
-    new Notification("There have been content changes to this page! Refresh for new content!",{icon: "src/icon-512x512.png"})                 //will send a local notification to user
+    //will send a local notification to user
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      registrations[0].showNotification("There have been content changes to this page! Refresh for new content!", { icon: "src/icon-512x512.png" });
+    });
     setTimeout(() => {
       popup.classList.toggle("show")
     }, "5000");
