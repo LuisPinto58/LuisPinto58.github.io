@@ -125,7 +125,7 @@ for (let index = 0; index < blocks.length; index++) {
     if (counter < 5) {      //to avoid messages onload
       counter++
     } else {
-      const popup = document.getElementById("myPopup");
+      const popup = document.getElementById("myPopup");    //pop up to warn about new content
       popup.classList.toggle("show")
       setTimeout(() => {
         popup.classList.toggle("show")
@@ -150,11 +150,10 @@ onSnapshot(collection(db, "news"), () => {                  //news information s
   if (counter < 7) {      //to avoid messages onload
     counter++
   } else {
-    new Notification("There have been content changes on the news tab! Check them out!")                 //will send a local notification to user 
+    new Notification("There have been content changes on the news tab! Check them out!",{icon: "src/icon-512x512.png"})                 //will send a local notification to user 
 
   }
 })
-
 
 
 
@@ -168,6 +167,9 @@ async function loadModal(block) {
   const blockFolder = ref(storage, "block")
   const imageUrl = await getDownloadURL(ref(blockFolder, `${block}.jpg`))
   document.getElementById("blockImage").src = imageUrl 
+  
+//making sure images  get updated
+$('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() })
 
   //description and block
   const blockref = doc(db, "block", `${block}`)
@@ -183,7 +185,7 @@ async function loadModal(block) {
     console.log('No such document!');
   }
   //places information 
-  let count = 0        //to remove empty from inner html
+  let count = 0        
   const placecollection = collection(blockref, "places")
   const snapshot = await getDocs(placecollection);
   snapshot.forEach((doc) => {

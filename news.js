@@ -186,7 +186,7 @@ async function loadNews(q) {
               <div class="row g-0">
                 <div class="col-5 ${doc.data().area}">
                   <img src="${imgUrl}"
-                    class="img-fluid rounded-start gradient" loading="lazy">
+                    class="img-fluid rounded-start gradient NO-CACHE" loading="lazy">
                 </div>
                 <div class="col-7">
                   <div class="card-body">
@@ -199,7 +199,11 @@ async function loadNews(q) {
     node.appendChild(elipse)
     node.appendChild(card)
     card.addEventListener("click", () => loadNewsModal(doc, imgUrl))
+
+    //making sure images  get updated
+    $('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() })
   }
+
 
   document.getElementsByClassName("skeleton")[0].classList.add("d-none"); //removing skeleton screen element
   document.getElementsByClassName("skeleton")[1].classList.add("d-none");
@@ -233,6 +237,11 @@ function unloadNews() {
 function loadNewsModal(doc, image) {                           //will load content to modal of card clicked
   //load image
   document.getElementById("newsImage").src = image
+
+  
+  //making sure images  get updated
+  $('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() })
+  
   //skeleton
   document.getElementById("newsTitle").innerHTML = "■■■■■■■■■■■■"                  //while its replacing content, modal will show skeleton
   document.getElementById("newsDescription").innerHTML = "■■■■■■■■■■■■"

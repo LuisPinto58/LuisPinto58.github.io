@@ -35,7 +35,7 @@
     <!-- Main page-->
     <div id="main" style="margin-top: 120px; margin-bottom: 36px;">
       <div style="display: flex;justify-content: center;">
-        <img src="src/user.svg" alt="pfp" width="180px" height="180px" style="border-radius: 50%;" id="pfp">
+        <img src="src/user.svg" alt="pfp" width="180px" height="180px" style="border-radius: 50%;" class="NO-CACHE" id="pfp">
       </div>
   
       <div style="margin-top: 40px;margin-left: 20px; margin-right: 20px;">
@@ -61,9 +61,6 @@
       </div>
     </div>
     <div style="display: flex;flex-wrap: nowrap;justify-content: center;">
-    <div class="popup">
-      <span class="popuptext" id="myPopup">Might take a while to view changes :D</span>
-    </div>
     </div>
     <div style="margin-top: 40px;margin-left: 20px; margin-right: 20px;display: flex;flex-wrap: wrap;justify-content: center;">
       <button type="button" class="btn btn-outline-light" style="background-color:#24C9A3; width: 80%;margin-bottom: 24px;height: 60px;" data-bs-toggle="modal" data-bs-target="#preferencesModal">
@@ -211,7 +208,11 @@
   <!-- Bottom navbar-->
   <nav class="navbar fixed-bottom bg-body-tertiary bottomNav">
     <div class="container-fluid  justify-content-evenly">
+      
+    <div class="popup">
+      <span class="popuptext" id="myPopup">Refresh to see your new profile pic!</span>
       <a href="user.html"><img src="src\useractive.svg" alt="user" height="40px" ></a>
+    </div>
 
       <a href="index.html"><img src="src\mapIcon.svg" alt="map" height="40px"></a>
 

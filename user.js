@@ -62,10 +62,14 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("notLogged").classList.add("d-none")
         document.getElementById("Logged").classList.remove("d-none")
         CurrentUser = user.uid
+
         const refimage = ref(userFolder, CurrentUser)
         const img = await getDownloadURL(refimage)
         document.getElementById("pfp").src = img
-        console.log(img)
+
+         //making sure images  get updated    
+        $('.NO-CACHE').attr('src',function () { return $(this).attr('src') + "?a=" + Math.random() });
+
         
         Notification.requestPermission(function(status){              //will request permission for notifications
           console.log("Notification permission status:", status);
@@ -207,7 +211,7 @@ async function getFavorites() {
         elipse.innerHTML = '<img src="src/circlefuture.svg" alt="circle" height="28px">'
       }
   
-      const card = document.createElement("div")                                 //add card  not ordering
+      const card = document.createElement("div")                                 //add card
       card.className = "col-11 col-md-4"
       card.setAttribute("data-bs-toggle", "modal")
       card.setAttribute("data-bs-target", "#newsModal")
