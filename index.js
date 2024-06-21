@@ -61,9 +61,6 @@ onAuthStateChanged(auth, async (user) => {                   //will check if use
   if (user) {
     const docSnap = await getDoc(doc(db, "users", user.uid))
     if (docSnap.exists()) {
-      Notification.requestPermission(function(status){              //will request permission for notifications
-        console.log("Notification permission status:", status);
-       });
       if (docSnap.data().adminToken == true) {
         $('.admin').removeClass('d-none');
       }
@@ -153,10 +150,10 @@ onSnapshot(collection(db, "news"), () => {                  //news information s
   if (counter < 7) {      //to avoid messages onload
     counter++
   } else {
-      //will send a local notification to user, used for news due to higher interest to user
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        registrations[0].showNotification("There have been content changes to the news tab! Check them out!", { icon: "src/icon-512x512.png" });
-      });
+    //will send a local notification to user, used for news due to higher interest to user
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      registrations[0].showNotification("There have been content changes to the news tab!GO Check them out!", { icon: "src/icon-512x512.png" });
+    });
   }
 })
 

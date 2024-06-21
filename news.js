@@ -182,9 +182,9 @@ async function loadNews(q) {
     card.className = "col-11 col-md-4"
     card.setAttribute("data-bs-toggle", "modal")
     card.setAttribute("data-bs-target", "#newsModal")
-    card.innerHTML = `<div class="card" style="max-width: 540px; max-height: 140px">
+    card.innerHTML = `<div class="card" style="max-width: 540px; max-height: 160px">
               <div class="row g-0">
-                <div class="col-5 ${doc.data().area}" style="max-height: 140px">
+                <div class="col-5 ${doc.data().area}" style="max-height: 160px">
                   <img src="${imgUrl}"
                     class="img-fluid rounded-start gradient NO-CACHE" loading="lazy">
                 </div>
@@ -216,10 +216,10 @@ function unloadNews() {
         <img src="src/circle.svg" alt="user" height="28px">
       </div>
       <div class="col-11 col-md-4 skeleton">
-        <div class="card" style="max-width: 540px;max-height: 140px">
+        <div class="card" style="max-width: 540px;max-height: 160px">
           <div class="row g-0">
             <div class="col-5 General">
-              <img src="https://firebasestorage.googleapis.com/v0/b/projtest-2178c.appspot.com/o/news%20images%2Fgrey.jpg?alt=media&token=23cea584-44b6-4cf8-b2ab-8359e00aa5e6"class="img-fluid rounded-start gradient">
+              <img src="https://firebasestorage.googleapis.com/v0/b/projtest-2178c.appspot.com/o/news%20images%2Fgrey.jpg?alt=media&token=23cea584-44b6-4cf8-b2ab-8359e00aa5e6"class="img-fluid rounded-start gradient" style:"max-height:160px">
             </div>
             <div class="col-7">
               <div class="card-body">

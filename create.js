@@ -41,7 +41,7 @@ const db = getFirestore(app);
 //create user 
 document.getElementById("createAccountForm").addEventListener("submit", (event) => createAccount(event))
 
-function createAccount(event) {          
+function createAccount(event) {
   event.preventDefault()
   const email = document.getElementById("InputEmailcreator").value
   const password = document.getElementById("InputPasswordcreator").value
