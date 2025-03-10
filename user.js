@@ -37,12 +37,7 @@ import {  //storage
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAX5YEJ3Y2hNi_47JkOuKWi0c_iEleTxLw",
-  authDomain: "esmadconnect.firebaseapp.com",
-  projectId: "esmadconnect",
-  storageBucket: "esmadconnect.appspot.com",
-  messagingSenderId: "9895829",
-  appId: "1:9895829:web:a9c2013257d5b3c656809c"
+  ${{ secrets.FIREBASECONFIG }}
 };
 
 
